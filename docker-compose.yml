@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+    techchallenge-seeddb:
+        build: .
+        volumes:
+            - ./conf-dockercompose.toml:/TechChallengeApp/conf.toml
+        image: techchallenge
+        command: updatedb
+        depends_on:
+            techchallenge-db:
+                condition: service_healthy
+
+    techchallenge-app:
+        build: .
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./conf-dockercompose.toml:/TechChallengeApp/conf.toml
+        image: techchallenge
+        command: serve
+        depends_on:
+            - techchallenge-seeddb
+
+    techchallenge-db:
+        image: postgres:13.2-alpine
+        restart: always
+        environment:
+            POSTGRES_DB: ${TECHCHALLENGE_DB_NAME:-techchallengedb01}
+            POSTGRES_USER: ${TECHCHALLENGE_DB_USER:-techchallengedbadmin}
+            POSTGRES_PASSWORD: ${TECHCHALLENGE_DB_PASSWORD:-admin}
+        volumes:
+            - techchallenge-dbdata:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U ${TECHCHALLENGE_DB_USER:-techchallengedbadmin} -d ${TECHCHALLENGE_DB_NAME:-techchallengedb01}"]
+            interval: 5s
+            timeout: 10s
+            retries: 5
+            start_period: 5s
+
+volumes:
+    techchallenge-dbdata:

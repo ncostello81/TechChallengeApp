@@ -1,0 +1,7 @@
+"DbUser" = "techchallengedbadmin"
+"DbPassword" = "admin"
+"DbName" = "techchallengedb01"
+"DbPort" = "5432"
+"DbHost" = "techchallenge-db"
+"ListenHost" = "0.0.0.0"
+"ListenPort" = "3000"
