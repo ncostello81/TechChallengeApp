@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  jenkins-testchallenge:
+    build: .
+    ports:
+        - "8080:8080"
+        - "50000:50000"
+    volumes:
+        - jenkins-testchallenge-vol:/var/jenkins_home
+        - jenkins-testchallenge-dind-client-certs:/machines/docker:ro
+    image: jenkins-testchallenge:0.1
+    environment:
+        - AZ_SP_SUBSCRIPTION_ID
+        - AZ_SP_CLIENT_ID
+        - AZ_SP_CLIENT_SECRET
+        - AZ_SP_TENANT_ID
+        - JENKINS_URL=http://localhost:8080
+  
+  docker:
+    image: docker:stable-dind
+    privileged: true
+    ports:
+        - "8021:8021"
+    volumes:
+        - jenkins-testchallenge-dind-client-certs:/certs/client
+        - jenkins-testchallenge-vol:/var/jenkins_home
+
+volumes:
+    jenkins-testchallenge-vol:
+    jenkins-testchallenge-dind-client-certs:

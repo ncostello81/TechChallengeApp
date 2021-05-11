@@ -1,0 +1,6 @@
+git
+workflow-aggregator
+configuration-as-code
+blueocean
+image-tag-parameter 
+azure-credentials:182.v3ccd4a755864

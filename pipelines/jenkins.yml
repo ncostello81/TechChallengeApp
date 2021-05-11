@@ -1,0 +1,13 @@
+jenkins:
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  remotingSecurity:
+    enabled: true
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+      - id: "admin"
+        name: "admin"
+        password: "changeme"
