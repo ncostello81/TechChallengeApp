@@ -1,0 +1,11 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo "Executing provisioning for ${env.BUILD_ID}..."
+            }
+        }
+    }
+}

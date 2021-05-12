@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo "Running build for ${env.BUILD_ID}..."
+                echo "Running Docker build for ${env.BUILD_ID}..."
             }
         }
     }

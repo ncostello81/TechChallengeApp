@@ -22,7 +22,7 @@ jobs:
               source {
                 git {
                   id('testchallenge-build-branches')
-                  remote('git@github.com:ncostello81/TechChallengeApp.git')
+                  remote('https://github.com/ncostello81/TechChallengeApp.git')
                   traits {
                     gitBranchDiscovery()
                   }
@@ -50,7 +50,7 @@ jobs:
               source {
                 git {
                   id('testchallenge-deploy-branches')
-                  remote('git@github.com:ncostello81/TechChallengeApp.git')
+                  remote('https://github.com/ncostello81/TechChallengeApp.git')
                   traits {
                     gitBranchDiscovery()
                   }
@@ -78,7 +78,7 @@ jobs:
               source {
                 git {
                   id('testchallenge-platform-branches')
-                  remote('git@github.com:ncostello81/TechChallengeApp.git')
+                  remote('https://github.com/ncostello81/TechChallengeApp.git')
                   traits {
                     gitBranchDiscovery()
                   }
