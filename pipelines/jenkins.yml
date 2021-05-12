@@ -24,8 +24,31 @@ credentials:
             azureEnvironmentName: "Azure"
             subscriptionId: ${AZ_SP_SUBSCRIPTION_ID}
             clientId: ${AZ_SP_CLIENT_ID}
-            clientSecret: ${AP_SP_CLIENT_SECRET}
+            clientSecret: ${AZ_SP_CLIENT_SECRET}
             tenant: ${AZ_SP_TENANT_ID}
+groovy:
+  - script: >
+      import com.cloudbees.plugins.credentials.*;
+      import com.cloudbees.plugins.credentials.common.*;
+      import com.cloudbees.plugins.credentials.domains.*;
+      import com.cloudbees.plugins.credentials.impl.*;
+      import org.jenkinsci.plugins.docker.commons.credentials.*;
+      import jenkins.model.*
+      
+      domain = Domain.global();
+      parent = Jenkins.instance;
+      store = parent.getExtensionList('com.cloudbees.plugins.credentials.SystemCredentialsProvider')[0].getStore();
+      
+      dockerCertCred = new DockerServerCredentials(
+        CredentialsScope.GLOBAL,
+        "Docker-Certificate-Integration",
+        "",
+        new File('/machines/docker/key.pem').text,
+        new File('/machines/docker/cert.pem').text,
+        new File('/machines/docker/ca.pem').text
+      );
+
+      store.addCredentials(domain, dockerCertCred);
 jobs:
   - script: >
         multibranchPipelineJob('testchallenge-build') {

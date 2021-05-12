@@ -2,6 +2,8 @@ git
 workflow-aggregator
 job-dsl
 configuration-as-code
+configuration-as-code-groovy
+docker-commons
 blueocean
 image-tag-parameter 
 azure-credentials:182.v3ccd4a755864

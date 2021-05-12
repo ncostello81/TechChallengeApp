@@ -9,7 +9,7 @@ variable "psql_password" {}
 
 locals {
     obj_app = "Servian-TestChallenge"
-    az_location = "Australia Southest"
+    az_location = "Australia Southeast"
     az_loc_id = "as"
     vm_admin_username = "srvnadmin"
 }
