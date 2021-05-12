@@ -2,6 +2,9 @@ jenkins:
   authorizationStrategy:
     loggedInUsersCanDoAnything:
       allowAnonymousRead: false
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: false
   remotingSecurity:
     enabled: true
   securityRealm:
@@ -11,3 +14,88 @@ jenkins:
       - id: "admin"
         name: "admin"
         password: "changeme"
+jobs:
+  - script: >
+        multibranchPipelineJob('testchallenge-build') {
+          branchSources {
+            branchSource {
+              source {
+                git {
+                  id('testchallenge-build-branches')
+                  remote('git@github.com:ncostello81/TechChallengeApp.git')
+                  traits {
+                    gitBranchDiscovery()
+                  }
+                }
+              }
+              strategy {
+                allBranchesSame {
+                  props {
+                    suppressAutomaticTriggering()
+                  }
+                }
+              }
+            }
+          }
+          factory {
+            workflowBranchProjectFactory {
+              scriptPath('Jenkinsfile')
+            }
+          }
+        } 
+  - script: >
+        multibranchPipelineJob('testchallenge-deploy') {
+          branchSources {
+            branchSource {
+              source {
+                git {
+                  id('testchallenge-deploy-branches')
+                  remote('git@github.com:ncostello81/TechChallengeApp.git')
+                  traits {
+                    gitBranchDiscovery()
+                  }
+                }
+              }
+              strategy {
+                allBranchesSame {
+                  props {
+                    suppressAutomaticTriggering()
+                  }
+                }
+              }
+            }
+          }
+          factory {
+            workflowBranchProjectFactory {
+              scriptPath('deploy/Jenkinsfile')
+            }
+          }
+        }
+  - script: >
+        multibranchPipelineJob('testchallenge-platform') {
+          branchSources {
+            branchSource {
+              source {
+                git {
+                  id('testchallenge-platform-branches')
+                  remote('git@github.com:ncostello81/TechChallengeApp.git')
+                  traits {
+                    gitBranchDiscovery()
+                  }
+                }
+              }
+              strategy {
+                allBranchesSame {
+                  props {
+                    suppressAutomaticTriggering()
+                  }
+                }
+              }
+            }
+          }
+          factory {
+            workflowBranchProjectFactory {
+              scriptPath('platform/Jenkinsfile')
+            }
+          }
+        } 
