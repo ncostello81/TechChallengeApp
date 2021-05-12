@@ -2,16 +2,19 @@
 
 ## Pre-requisites
 
-1. A pre-existing Azure subscription
+1. A pre-existing (and presumably empty) Azure subscription
 1. Docker (w/ Docker Compose)
 
-## Running Jenkins
+### Azure Setup
 
-1. [Create an Azure Service Principal with an application secret via the Azure Portal](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal), and note its:
+1. [Create an Azure Service Principal with an application secret and Contributor access via the Azure Portal](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal), and note its:
     * Subscription ID, from the Subscription page.
     * Client ID, from the App Registration page.
     * Client Secret, from the Certificates & Secrets page of the App Registration.
     * Tenant ID, from the App Registration page.
+
+## Running Jenkins
+
 1. With your Service Principal details, populate the corresponding environment variables in your chosen shell (or in a .env file if you like, but **DO NOT** check it in):
     * `export AZ_SP_SUBSCRIPTION_ID=uogr` for Shell/Bash, or `$env:AZ_SP_SUBSCRIPTION_ID = 'uogr'` for PowerShell
     * `export AZ_SP_CLIENT_ID=uogr` for Shell/Bash, or `$env:AZ_SP_CLIENT_ID = 'uogr'` for PowerShell

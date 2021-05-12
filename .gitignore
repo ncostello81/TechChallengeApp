@@ -22,3 +22,8 @@ dist/
 
 # Output Binary
 TechChallengeApp
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
