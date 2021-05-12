@@ -24,6 +24,6 @@ dist/
 TechChallengeApp
 
 # Terraform
-**/.terraform/*
+.terraform*
 *.tfstate
 *.tfstate.*
