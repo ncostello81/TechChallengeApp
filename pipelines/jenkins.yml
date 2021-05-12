@@ -14,6 +14,18 @@ jenkins:
       - id: "admin"
         name: "admin"
         password: "changeme"
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+        - azure:
+            id: Azure-TestChallenge-SP
+            scope: GLOBAL
+            azureEnvironmentName: "Azure"
+            subscriptionId: ${AZ_SP_SUBSCRIPTION_ID}
+            clientId: ${AZ_SP_CLIENT_ID}
+            clientSecret: ${AP_SP_CLIENT_SECRET}
+            tenant: ${AZ_SP_TENANT_ID}
 jobs:
   - script: >
         multibranchPipelineJob('testchallenge-build') {
