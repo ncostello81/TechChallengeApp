@@ -1,4 +1,5 @@
 azure-credentials:182.v3ccd4a755864
+azure-keyvault
 blueocean
 configuration-as-code
 configuration-as-code-groovy

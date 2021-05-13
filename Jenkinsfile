@@ -50,7 +50,7 @@ pipeline {
                 echo "Pushing build ${env.BUILD_ID} to container registry..."
                 script {
                     docker.withServer('tcp://docker:2376', 'Docker-Certificate-Integration') {
-                        sh(script: "docker login -u ${ACR_USER} -p ${ACR_PASS} acrsrvntestnc81.azurecr.io", label: 'Logging in to container registry...')
+                        sh(script: "docker login -u ${ACR_USER} -p ${ACR_PASS} ${registryName}", label: 'Logging in to container registry...')
                         sh(script: "docker push ${imageName}:${imageTag}", label: 'Pushing version tag...')
                     }
                 }
