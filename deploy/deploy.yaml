@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testchallenge-updatedb
+spec:
+  replicas: 1
+ # backoffLimit: 0
+  selector:
+    matchLabels:
+      app: testchallenge-updatedb
+  template:
+    metadata:
+      labels:
+        app: testchallenge-updatedb
+    spec:
+      containers:
+      - name: testchallenge-updatedb
+        image: FULLIMAGE
+        command: ["updatedb"]
+#      restartPolicy: Never
+  

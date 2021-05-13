@@ -2,9 +2,21 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Deploy') {
             steps {
-                echo "Running deploy for ${env.BUILD_ID}..."
+                echo "Running deploy for ${TAG}..."
+                script {
+                    docker.withServer('tcp://docker:2376', 'Docker-Certificate-Integration') {
+                        docker.image('ncostello81/config-tools:0.1').inside("-u root --network=host") {
+                            dir('deploy') {
+                                withCredentials([azureServicePrincipal('Azure-TestChallenge-SP')]) {
+                                    sh(script: 'az aks get-credentials --resource-group rg-as-servian-frontend --name aks-as-servian-app', label: 'Authenticating to the cluster...')
+                                    sh(script: "sed -e 's|FULLIMAGE|${TAG}|g' deploy.yaml | kubectl apply -f -", label: 'Applying config to the cluster...')
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
