@@ -24,8 +24,8 @@ pipeline {
                         }
                     }
 
-                    Credentials c = (Credentials) new UsernamePasswordCredentialsImpl(CredentialsScope.GLOBAL, 'Container-Registry-Creds', '', registryUser, registryPassword)
-                    SystemCredentialsProvider.getInstance().getStore().addCredentials(Domain.global(), c)
+                    com.cloudbees.plugins.credentials.Credentials c = (com.cloudbees.plugins.credentials.Credentials) new com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl(com.cloudbees.plugins.credentials.CredentialsScope.GLOBAL, 'Container-Registry-Creds', '', registryUser, registryPassword)
+                    com.cloudbees.plugins.credentials.SystemCredentialsProvider.getInstance().getStore().addCredentials(com.cloudbees.plugins.credentials.domains.Domain.global(), c)
                 }
             }
         }
