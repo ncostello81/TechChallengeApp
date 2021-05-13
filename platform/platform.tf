@@ -159,7 +159,7 @@ resource "azurerm_container_registry" "acr" {
     resource_group_name      = azurerm_resource_group.rg_shared.name
     location                 = azurerm_resource_group.rg_shared.location
     sku                      = "Basic"
-    admin_enabled            = false
+    admin_enabled            = true
 
     tags = {
         Creator = var.obj_creator
@@ -195,6 +195,28 @@ resource "azurerm_key_vault" "keyvault" {
 #     value        = tls_private_key.backendkeypair.private_key_pem
 #     key_vault_id = azurerm_key_vault.keyvault.id
 # }
+
+resource "azurerm_key_vault_secret" "acr_user" {
+    name         = "container-registry-user"
+    value        = azurerm_container_registry.acr.admin_username
+    key_vault_id = azurerm_key_vault.keyvault.id
+
+    tags = {
+        Creator = var.obj_creator
+        Application = local.obj_app
+    }
+}
+
+resource "azurerm_key_vault_secret" "acr_password" {
+    name         = "container-registry-password"
+    value        = azurerm_container_registry.acr.admin_password
+    key_vault_id = azurerm_key_vault.keyvault.id
+
+    tags = {
+        Creator = var.obj_creator
+        Application = local.obj_app
+    }
+}
 
 resource "azurerm_key_vault_secret" "frontend_key" {
     name         = "frontend-private-key"
