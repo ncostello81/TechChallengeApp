@@ -26,6 +26,15 @@ credentials:
             clientId: ${AZ_SP_CLIENT_ID}
             clientSecret: ${AZ_SP_CLIENT_SECRET}
             tenant: ${AZ_SP_TENANT_ID}
+security:
+  scriptApproval:
+    approvedSignatures:
+      - "staticField com.cloudbees.plugins.credentials.CredentialsScope GLOBAL"
+      - "new com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl com.cloudbees.plugins.credentials.CredentialsScope java.lang.String java.lang.String java.lang.String java.lang.String"
+      - "staticMethod com.cloudbees.plugins.credentials.SystemCredentialsProvider getInstance"
+      - "method com.cloudbees.plugins.credentials.SystemCredentialsProvider getStore"
+      - "staticMethod com.cloudbees.plugins.credentials.domains.Domain global"
+      - "method com.cloudbees.plugins.credentials.CredentialsStore addCredentials com.cloudbees.plugins.credentials.domains.Domain com.cloudbees.plugins.credentials.Credentials"
 groovy:
   - script: >
       import com.cloudbees.plugins.credentials.*;
@@ -38,6 +47,8 @@ groovy:
       domain = Domain.global();
       parent = Jenkins.instance;
       store = parent.getExtensionList('com.cloudbees.plugins.credentials.SystemCredentialsProvider')[0].getStore();
+      
+      // Adds the DinD certificates to Jenkins to allow authentication
       
       dockerCertCred = new DockerServerCredentials(
         CredentialsScope.GLOBAL,
@@ -79,30 +90,30 @@ jobs:
           }
         } 
   - script: >
-        multibranchPipelineJob('testchallenge-deploy') {
-          branchSources {
-            branchSource {
-              source {
-                git {
-                  id('testchallenge-deploy-branches')
-                  remote('https://github.com/ncostello81/TechChallengeApp.git')
-                  traits {
-                    gitBranchDiscovery()
-                  }
-                }
-              }
-              strategy {
-                allBranchesSame {
-                  props {
-                    suppressAutomaticTriggering()
-                  }
-                }
-              }
+        pipelineJob('testchallenge-deploy') {
+          parameters {
+            imageTag {
+              name('TAG')
+              description('Select the tag you would like to deploy...')
+              image('techchallengeapp')
+              filter('.*')
+              registry('https://acrsrvntestnc81.azurecr.io')
+              credentialId('Container-Registry-Creds')
+              tagOrder('NATURAL')
             }
           }
-          factory {
-            workflowBranchProjectFactory {
-              scriptPath('deploy/Jenkinsfile')
+          definition {
+            cpsScm {
+              scriptPath('./deploy/Jenkinsfile')
+              scm {
+                git {
+                  remote {
+                    url('https://github.com/ncostello81/TechChallengeApp.git')
+                  }
+                  branch('*/initial-deploy-pipe')
+                  extensions {}
+                }
+              }
             }
           }
         }
