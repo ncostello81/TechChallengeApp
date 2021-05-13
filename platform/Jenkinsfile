@@ -8,10 +8,6 @@ pipeline {
             steps {
                 echo "Provisioning environment for ${env.BUILD_ID}..."
                 script {
-                    import com.cloudbees.plugins.credentials.impl.*
-                    import com.cloudbees.plugins.credentials.*
-                    import com.cloudbees.plugins.credentials.domains.*
-
                     def registryUser
                     def registryPassword
 
