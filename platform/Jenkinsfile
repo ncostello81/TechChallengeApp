@@ -3,9 +3,6 @@ pipeline {
     parameters {
         password(name: 'DB_PASSWORD', default: 'gh2387$$!s99', description: 'Please choose a DB password. It must meet Azure\'s complexity requirements.')
     }
-    tools {
-        'org.jenkinsci.plugins.docker.commons.tools.DockerTool' 'docker-install'
-    }
     stages {
         stage('Provision') {
             steps {
