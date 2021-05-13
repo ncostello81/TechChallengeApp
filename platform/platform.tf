@@ -39,16 +39,31 @@ resource "tls_private_key" "frontendkeypair" {
 resource "azurerm_resource_group" "rg_shared" {
     name     = "rg-${local.az_loc_id}-servian-shared"
     location = local.az_location
+
+    tags = {
+        Creator = var.obj_creator
+        Application = local.obj_app
+    }
 }
 
 resource "azurerm_resource_group" "rg_backend" {
     name     = "rg-${local.az_loc_id}-servian-backend"
     location = local.az_location
+
+    tags = {
+        Creator = var.obj_creator
+        Application = local.obj_app
+    }
 }
 
 resource "azurerm_resource_group" "rg_frontend" {
     name     = "rg-${local.az_loc_id}-servian-frontend"
     location = local.az_location
+
+    tags = {
+        Creator = var.obj_creator
+        Application = local.obj_app
+    }
 }
 
 resource "azurerm_virtual_network" "vnet" {
@@ -56,6 +71,11 @@ resource "azurerm_virtual_network" "vnet" {
     address_space       = ["10.0.0.0/16"]
     location            = azurerm_resource_group.rg_shared.location
     resource_group_name = azurerm_resource_group.rg_shared.name
+
+    tags = {
+        Creator = var.obj_creator
+        Application = local.obj_app
+    }
 }
 
 resource "azurerm_subnet" "snet_backend" {
@@ -106,12 +126,22 @@ resource "azurerm_network_security_group" "nsg_backend" {
         source_address_prefix      = "*"
         destination_address_prefix = "*"
     }
+
+    tags = {
+        Creator = var.obj_creator
+        Application = local.obj_app
+    }
 }
 
 resource "azurerm_network_security_group" "nsg_frontend" {
     name                = "nsg-${local.az_loc_id}-servian-frontend"
     location            = azurerm_resource_group.rg_frontend.location
     resource_group_name = azurerm_resource_group.rg_frontend.name
+
+    tags = {
+        Creator = var.obj_creator
+        Application = local.obj_app
+    }
 }
 
 resource "azurerm_subnet_network_security_group_association" "backend_nw_assoc" {
@@ -130,6 +160,11 @@ resource "azurerm_container_registry" "acr" {
     location                 = azurerm_resource_group.rg_shared.location
     sku                      = "Basic"
     admin_enabled            = false
+
+    tags = {
+        Creator = var.obj_creator
+        Application = local.obj_app
+    }
 }
 
 resource "azurerm_key_vault" "keyvault" {
@@ -148,6 +183,11 @@ resource "azurerm_key_vault" "keyvault" {
         object_id = data.azurerm_client_config.current.object_id
         secret_permissions = [ "Get", "Set", "List", "Delete", "Purge" ]
     }
+
+    tags = {
+        Creator = var.obj_creator
+        Application = local.obj_app
+    }
 }
 
 # resource "azurerm_key_vault_secret" "backend_key" {
@@ -160,18 +200,33 @@ resource "azurerm_key_vault_secret" "frontend_key" {
     name         = "frontend-private-key"
     value        = tls_private_key.frontendkeypair.private_key_pem
     key_vault_id = azurerm_key_vault.keyvault.id
+
+    tags = {
+        Creator = var.obj_creator
+        Application = local.obj_app
+    }
 }
 
 resource "azurerm_key_vault_secret" "db_user" {
     name         = "psql-user"
     value        = var.psql_user
     key_vault_id = azurerm_key_vault.keyvault.id
+
+    tags = {
+        Creator = var.obj_creator
+        Application = local.obj_app
+    }
 }
 
 resource "azurerm_key_vault_secret" "db_pass" {
     name         = "psql-user-password"
     value        = var.psql_password
     key_vault_id = azurerm_key_vault.keyvault.id
+
+    tags = {
+        Creator = var.obj_creator
+        Application = local.obj_app
+    }
 }
 
 resource "azurerm_postgresql_server" "postgres" {
@@ -192,6 +247,11 @@ resource "azurerm_postgresql_server" "postgres" {
     public_network_access_enabled    = false
     ssl_enforcement_enabled          = true
     ssl_minimal_tls_version_enforced = "TLS1_2"
+
+    tags = {
+        Creator = var.obj_creator
+        Application = local.obj_app
+    }
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
@@ -230,6 +290,11 @@ resource "azurerm_kubernetes_cluster" "aks" {
         dns_service_ip     = "192.168.1.1"
         service_cidr       = "192.168.0.0/16"
         #pod_cidr           = "172.16.0.0/22"
+    }
+
+    tags = {
+        Creator = var.obj_creator
+        Application = local.obj_app
     }
 }
 
