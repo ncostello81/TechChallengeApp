@@ -39,12 +39,10 @@ pipeline {
         stage('Push') {
             options {
                 azureKeyVault(
-                    credentialID: 'Azure-TestChallenge-SP', keyVaultURL: 'https://acrsrvntestnc81.azurecr.io', 
-                    secrets: [[envVariable: 'ACR_USER', name: 'container-registry-user', secretType: 'Secret']]
-                )
-                azureKeyVault(
-                    credentialID: 'Azure-TestChallenge-SP', keyVaultURL: 'https://acrsrvntestnc81.azurecr.io', 
-                    secrets: [[envVariable: 'ACR_PASS', name: 'container-registry-password', secretType: 'Secret']]
+                    [credentialID: 'Azure-TestChallenge-SP', keyVaultURL: 'https://acrsrvntestnc81.azurecr.io', 
+                    secrets: [[envVariable: 'ACR_USER', name: 'container-registry-user', secretType: 'Secret']]],
+                    [credentialID: 'Azure-TestChallenge-SP', keyVaultURL: 'https://acrsrvntestnc81.azurecr.io', 
+                    secrets: [[envVariable: 'ACR_PASS', name: 'container-registry-password', secretType: 'Secret']]]
                 )
             }
             steps {
