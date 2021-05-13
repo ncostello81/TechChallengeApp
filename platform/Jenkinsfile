@@ -1,7 +1,7 @@
 pipeline {
     agent any
     parameters {
-        password(name: 'DB_PASSWORD', default: 'gh2387$$!s99', description: 'Please choose a DB password. It must meet Azure\'s complexity requirements.')
+        password(name: 'DB_PASSWORD', defaultValue: 'gh2387$$!s99', description: 'Please choose a DB password. It must meet Azure\'s complexity requirements.')
     }
     stages {
         stage('Provision') {
