@@ -28,3 +28,14 @@
 1. In your browser of choice, navigate to http://localhost:8080
 1. Login with admin/changeme
     * **Note:** This basic level of security is only in place for the purposes of this exercise, obviously.
+
+## Build the Azure environment
+
+1. Select the **testchallege-platform** job.
+1. If no branches have appeared, click Scan Multibranch Pipeline Now to register them.
+1. Select the branch you would like to run.
+1. Click Build to run the job to create the Azure environment.
+    * **Note 1:** If you are running a branch for the first time, the environment will be created with this default Postgres password: `gh2387$$!s99`
+    * **Note 2:** If you are running a branch for the second time, you will be prompted to set the Postgres password, at which point you may choose to set it how you like, but:
+        * it must meet the complexity requirements [described here](https://docs.microsoft.com/en-us/azure/postgresql/quickstart-create-server-database-azure-cli#create-an-azure-database-for-postgresql-server). (At the time of writing, "It must contain 8 to 128 characters from three of the following categories: English uppercase letters, English lowercase letters, numbers, and non-alphanumeric characters.")
+        * you will need to update the [conf.toml](../conf.toml) file with the appropriate password before building the app. [In a real-world scenario, we'd be pulling the secret value from Azure Key Vault at build time.]

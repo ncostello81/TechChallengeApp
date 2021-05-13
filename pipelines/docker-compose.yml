@@ -1,13 +1,17 @@
 version: '3.8'
 services:
   jenkins-testchallenge:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
     ports:
         - "8080:8080"
         - "50000:50000"
     volumes:
         - jenkins-testchallenge-vol:/var/jenkins_home
         - jenkins-testchallenge-dind-client-certs:/machines/docker:ro
+    
     image: jenkins-testchallenge:0.1
     environment:
         - AZ_SP_SUBSCRIPTION_ID
