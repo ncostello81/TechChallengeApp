@@ -13,7 +13,7 @@ pipeline {
                             dir('platform') {
                                 withCredentials([azureServicePrincipal('Azure-TestChallenge-SP')]) {
                                     sh 'terraform init';
-                                    sh "terraform apply -auto-approve -var=\"az_sub_id=${AZURE_SUBSCRIPTION_ID}\" -var=\"az_client_id=${AZURE_CLIENT_ID}\" -var=\"az_client_secret=${AZURE_CLIENT_SECRET}\" -var=\"az_tenant_id=${AZURE_TENANT_ID}\" -var=\"obj_creator=ServianTestPipelines\" -var \"psql_user=techchallengedbadmin\" -var \"psql_password=${param.DB_PASSWORD}\"";
+                                    sh "terraform apply -auto-approve -var=\"az_sub_id=${AZURE_SUBSCRIPTION_ID}\" -var=\"az_client_id=${AZURE_CLIENT_ID}\" -var=\"az_client_secret=${AZURE_CLIENT_SECRET}\" -var=\"az_tenant_id=${AZURE_TENANT_ID}\" -var=\"obj_creator=ServianTestPipelines\" -var \"psql_user=techchallengedbadmin\" -var \"psql_password=${params.DB_PASSWORD}\"";
                                     // env.OUT_PRIV_IP = sh(script: "terraform output -state=\"${params.DEPLOY_ENV_NAME.toLowerCase()}-${VM_RANDOM}.tfstate\" private_ip", returnStdout: true).trim();
                                     // env.OUT_VM_NAME = sh(script: "terraform output -state=\"${params.DEPLOY_ENV_NAME.toLowerCase()}-${VM_RANDOM}.tfstate\" vm_name", returnStdout: true).trim();
                                 }
