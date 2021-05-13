@@ -320,3 +320,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
     }
 }
 
+output "container_registry_user" {
+    value = azurerm_container_registry.acr.admin_username
+}
+
+output "container_registry_password" {
+    value = azurerm_container_registry.acr.admin_password
+}
